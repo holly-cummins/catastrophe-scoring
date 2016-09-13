@@ -1,5 +1,5 @@
 # Cat-astrophe Microservices Sample
-# Web Front-End Service
+# Scoring Service
 
 
 # About this sample
