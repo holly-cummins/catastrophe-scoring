@@ -1,0 +1,16 @@
+<server>
+    <featureManager>
+        <feature>jaxrs-2.0</feature>
+        <feature>jsonp-1.0</feature>
+        <feature>usr:consulDiscovery</feature>
+    </featureManager>
+    <application name='catastrophe-scoring' location='catastrophe-scoring.war' type='war' context-root='/'/>
+    <httpEndpoint id='defaultHttpEndpoint' host='*' httpPort='8081'/>
+    <httpDispatcher enableWelcomePage='false'/>
+    <applicationMonitor dropinsEnabled='false' updateTrigger='mbean'/>
+    <config updateTrigger='mbean'/>
+
+    <consul.annotation.scanner server="catastrophe-consul.mybluemix.net" port="80"/>
+
+</server>
+
