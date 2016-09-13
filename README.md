@@ -5,7 +5,8 @@
 # About this sample
 
 This sample is one microservice in a [larger sample 
-microservices application](http://github.com/holly-cummins/catastrophe-microservices). I've written a [blog post](https://developer.ibm.com/wasdev/blog/2016/06/01/putting-micro-microservices/) describing the overall sample. 
+microservices application](http://github.com/holly-cummins/catastrophe-microservices). If you’re wondering about the names – all good internet content involves cats. This sample was written
+to be used as a live demo, and I have some experience of live demos, so I called it – of course – cat-astrophe.
 
 This service evaluates a user guess about a cat name, using a simple algorithm. 
 
