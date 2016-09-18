@@ -35,7 +35,7 @@ Run
 
     gradle runServer
 
-The service should be testable on http://localhost:8081/rest/scoring/score. 
+The service should be testable on http://localhost:8081/rest/scoring/scoringalgorithm. 
 
 ### Deploying to a single board computer 
 

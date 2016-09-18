@@ -12,7 +12,15 @@ public class RestNameScorer {
 	@Path("score")
 	@Produces(MediaType.APPLICATION_JSON)
 	@GET
-	public int getScore(@QueryParam("realName") String realName, @QueryParam("guess") String guess) {
-		return new NameScorer().getScore(realName, guess);
+	public NameScorer getScore(@QueryParam("realName") String realName, @QueryParam("guess") String guess) {
+		return new NameScorer(realName, guess);
+	}
+
+	// Useful for testing
+	@Path("scoringalgorithm")
+	@Produces(MediaType.APPLICATION_JSON)
+	@GET
+	public String getScoringAlgorithm() {
+		return new NameScorer(null, null).getScoringAlgorithm();
 	}
 }

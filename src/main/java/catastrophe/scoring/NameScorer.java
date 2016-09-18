@@ -5,9 +5,21 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class NameScorer {
 
-	public int getScore(String realName, String guess) {
+	private final String realName;
+	private final String guess;
+
+	public NameScorer(String realName, String guess) {
+		this.realName = realName;
+		this.guess = guess;
+	}
+
+	public int getScore() {
 		// Rather unsophisticated algorithm :)
 		return 70;
+	}
+
+	public String getScoringAlgorithm() {
+		return "an invariant number";
 	}
 
 }
