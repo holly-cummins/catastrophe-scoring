@@ -29,11 +29,13 @@ To set up Eclipse projects, run
 
 ### Running the server locally (from the command line) 
 
+This service uses the [Liberty Consul Service Discovery sample extension](https://github.com/WASdev/sample.consulservicediscovery) to register itself with a Consul server. Before building, clone and build that project, so that it's in the local maven repository. 
+
 Run
 
     gradle runServer
 
-The application should be available on http://localhost:9080.
+The service should be testable on http://localhost:8081/rest/scoring/score. 
 
 ### Deploying to a single board computer 
 
@@ -52,7 +54,7 @@ This can then be pushed to Bluemix with
 
 # Dependencies 
 
-This sample uses [WebSphere Liberty](http://wasdev.net), Java EE interfaces, the [webjars](http://www.webjars.org) bundles of the [Bootstrap UI framework](http://getbootstrap.com), and the [Liberty Consul Service Discovery sample](https://github.com/WASdev/sample.consulservicediscovery). 
+This sample uses [WebSphere Liberty](http://wasdev.net), Java EE interfaces, and the [Liberty Consul Service Discovery sample](https://github.com/WASdev/sample.consulservicediscovery). 
 
 # More information 
 
