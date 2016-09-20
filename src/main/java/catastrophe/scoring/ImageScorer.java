@@ -16,6 +16,9 @@ import com.ibm.watson.developer_cloud.visual_recognition.v3.model.VisualClassifi
 
 public class ImageScorer {
 
+	private static final int FILE_SIZE_WEIGHT = 30;
+	private static final int AVERAGE_IMAGE_SIZE = 4000;
+
 	public Score getScore(String encodedImage) throws IOException {
 		VisualRecognition service = new VisualRecognition(VisualRecognition.VERSION_DATE_2016_05_20);
 		// In Bluemix, this isn't needed
@@ -28,7 +31,6 @@ public class ImageScorer {
 			File file = convertStringToImageFile(encodedImage);
 			ClassifyImagesOptions options = buildOptions(file);
 			VisualClassification result = service.classify(options).execute();
-			System.out.println(result);
 			// We know we passed through an image, so we can safely get the 0th
 			// classifier
 			List<VisualClassifier> classifiers = result.getImages().get(0).getClassifiers();
@@ -36,7 +38,13 @@ public class ImageScorer {
 				VisualClassifier classifier = classifiers.get(0);
 				List<VisualClass> visualClasses = classifier.getClasses();
 				if (visualClasses.size() > 0) {
-					return generateScoreFromClasses(visualClasses);
+					Score score = generateScoreFromClasses(visualClasses);
+					// Now add a weighting for the image size - more detail is
+					// to be rewarded
+					double sizeRatio = ((double) file.length()) / AVERAGE_IMAGE_SIZE;
+					// Use a log, since the size should be diminishing returns
+					int sizeWeighting = (int) (0.5 - Math.log(sizeRatio) * FILE_SIZE_WEIGHT);
+					return new Score(score.getScore() - sizeWeighting, score.getBestGuess());
 				} else {
 					return new Score(0, "unrecognisable");
 				}

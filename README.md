@@ -71,7 +71,7 @@ Call the POST /v3/classifiers method with the following cURL command, which uplo
 Replace {api-key} with the service credentials you copied in the first stage.
 For positive example files, the _positive_examples suffix is required. The prefix you choose (for example, apple) becomes the name of that class.
 
-    curl -X POST -F "cats_positive_examples=@cats.zip" -F "fish_positive_examples=@fish.zip" -F "octopus_positive_examples=@octopods.zip" -F "elephant_positive_examples=@elephants.zip" -F "negative_examples=@negatives.zip" -F "name=line-drawings" "https://gateway-a.watsonplatform.net/visual-recognition/api/v3/classifiers?api_key={api-key}&version=2016-05-20"
+    curl -X POST -F "cat_positive_examples=@cats.zip" -F "fish_positive_examples=@fish.zip" -F "octopus_positive_examples=@octopods.zip" -F "elephant_positive_examples=@elephants.zip" -F "negative_examples=@negatives.zip" -F "name=line-drawings" "https://gateway-a.watsonplatform.net/visual-recognition/api/v3/classifiers?api_key={api-key}&version=2016-05-20"
     
 The response includes a new classifier ID and status. For example:
 {

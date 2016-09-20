@@ -14,7 +14,7 @@ public class Score {
 	}
 
 	public int getScore() {
-		return score;
+		return Math.min(score, 100);
 	}
 
 	public String getScoringAlgorithm() {
