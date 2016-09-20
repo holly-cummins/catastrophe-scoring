@@ -17,9 +17,8 @@ public class ImageScorer {
 	public Score getScore(String encodedImage) throws IOException {
 		VisualRecognition service = new VisualRecognition(VisualRecognition.VERSION_DATE_2016_05_20);
 		// In Bluemix, this isn't needed
-		service.setApiKey("59f69625c49175f83d1a20802d17d03ebaea83a6");
-
-		System.out.println("Classify an image");
+		// Uncomment and fill in the key for local running
+		// service.setApiKey("<api-key>");
 
 		if (encodedImage != null) {
 			// The Watson API doesn't yet support uploaded base 64
