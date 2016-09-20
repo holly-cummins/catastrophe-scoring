@@ -1,5 +1,7 @@
 package catastrophe.scoring;
 
+import java.io.IOException;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -12,8 +14,8 @@ public class RestNameScorer {
 	@Path("score")
 	@Produces(MediaType.APPLICATION_JSON)
 	@GET
-	public NameScorer getScore(@QueryParam("realName") String realName, @QueryParam("guess") String guess) {
-		return new NameScorer(realName, guess);
+	public Score getScore(@QueryParam("encodedImage") String encodedImage) throws IOException {
+		return new ImageScorer().getScore(encodedImage);
 	}
 
 	// Useful for testing
@@ -21,6 +23,6 @@ public class RestNameScorer {
 	@Produces(MediaType.APPLICATION_JSON)
 	@GET
 	public String getScoringAlgorithm() {
-		return new NameScorer(null, null).getScoringAlgorithm();
+		return new ImageScorer().getScoringAlgorithm();
 	}
 }

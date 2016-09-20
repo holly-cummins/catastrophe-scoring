@@ -40,6 +40,7 @@ dependencies {
        providedCompile group:'javax.ws.rs', name:'javax.ws.rs-api', version: '2.0.1'
        providedCompile group:'javax.enterprise', name:'cdi-api', version:'1.2'
        providedCompile group:'javax.json', name:'javax.json-api', version:'1.0'
+       compile 'com.ibm.watson.developer_cloud:java-sdk:3.3.1'
        testCompile 'junit:junit:4.12'
        testRuntime 'org.apache.cxf:cxf-rt-rs-client:3.1.1'
        testRuntime 'org.glassfish:javax.json:1.0.4'
