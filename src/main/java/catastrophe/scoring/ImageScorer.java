@@ -24,29 +24,53 @@ public class ImageScorer {
 
 		if (encodedImage != null) {
 			File file = convertStringToImageFile(encodedImage);
-			Builder optionsBuilder = new ClassifyImagesOptions.Builder().images(file);
-			String classifierId = System.getenv().get("CLASSIFIER_ID");
-
-			if (classifierId != null) {
-				optionsBuilder.classifierIds(classifierId);
-			} else {
-				System.out.println(
-						"Using the default classifier. Results are not trained for line drawings. Set the CLASSIFIER_ID environment variable to override.");
-			}
-			ClassifyImagesOptions options = optionsBuilder.build();
+			ClassifyImagesOptions options = buildOptions(file);
 			VisualClassification result = service.classify(options).execute();
 			System.out.println(result);
-			List<VisualClassifier> classes = result.getImages().get(0).getClassifiers();
-			VisualClassifier oo = classes.get(0);
-			System.out.println(oo.getId());
-			VisualClass visualClass = oo.getClasses().get(0);
-			int score = (int) (visualClass.getScore() * 100);
-			String bestGuess = visualClass.getName();
-			System.out.println("Score is " + score);
-			return new Score(score, bestGuess);
+			// We know we passed through an image, so we can safely get the 0th
+			// classifier
+			List<VisualClassifier> classifiers = result.getImages().get(0).getClassifiers();
+			if (classifiers.size() > 0) {
+				VisualClassifier classifier = classifiers.get(0);
+				List<VisualClass> visualClasses = classifier.getClasses();
+				if (visualClasses.size() > 0) {
+					return generateScoreFromClasses(visualClasses);
+				} else {
+					return new Score(0, "unrecognisable");
+				}
+			} else {
+				return new Score(0, "no classifier");
+			}
 		} else {
 			return new Score(0, "no image");
 		}
+	}
+
+	private Score generateScoreFromClasses(List<VisualClass> visualClasses) {
+		// We want the top pick
+		VisualClass visualClass = visualClasses.get(0);
+		String bestGuess = visualClass.getName();
+		int score = (int) (visualClass.getScore() * 100);
+
+		// If they didn't get the right animal, invert the score
+		if (!"cat".equals(bestGuess)) {
+			score = 100 - score;
+		}
+		return new Score(score, bestGuess);
+	}
+
+	private ClassifyImagesOptions buildOptions(File file) {
+		Builder optionsBuilder = new ClassifyImagesOptions.Builder().images(file);
+		String classifierId = System.getenv().get("CLASSIFIER_ID");
+
+		if (classifierId != null) {
+			optionsBuilder.classifierIds(classifierId);
+		} else {
+			System.out.println(
+					"Using the default classifier. Results are not trained for line drawings. Set the CLASSIFIER_ID environment variable to override.");
+		}
+		ClassifyImagesOptions options = optionsBuilder.build();
+		return options;
 	}
 
 	private File convertStringToImageFile(String encodedImage) throws IOException, FileNotFoundException {
