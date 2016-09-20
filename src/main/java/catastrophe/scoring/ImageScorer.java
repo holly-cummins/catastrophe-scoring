@@ -19,8 +19,10 @@ public class ImageScorer {
 	public Score getScore(String encodedImage) throws IOException {
 		VisualRecognition service = new VisualRecognition(VisualRecognition.VERSION_DATE_2016_05_20);
 		// In Bluemix, this isn't needed
-		// Uncomment and fill in the key for local running
-		service.setApiKey("59f69625c49175f83d1a20802d17d03ebaea83a6");
+		// Fill in the key for local running
+		if (System.getenv().get("VCAP_SERVICES") == null) {
+			service.setApiKey("{api-key}");
+		}
 
 		if (encodedImage != null) {
 			File file = convertStringToImageFile(encodedImage);
