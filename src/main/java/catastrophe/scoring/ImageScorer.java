@@ -23,9 +23,10 @@ public class ImageScorer {
 		VisualRecognition service = new VisualRecognition(VisualRecognition.VERSION_DATE_2016_05_20);
 		// In Bluemix, this isn't needed
 		// Fill in the key for local running
-		if (System.getenv().get("VCAP_SERVICES") == null) {
-			service.setApiKey("{api-key}");
-		}
+		// TODO temp Workaround for service binding if
+		// (System.getenv().get("VCAP_SERVICES") == null) {
+		service.setApiKey("59f69625c49175f83d1a20802d17d03ebaea83a6");
+		// }
 
 		if (encodedImage != null) {
 			File file = convertStringToImageFile(encodedImage);
