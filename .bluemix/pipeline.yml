@@ -55,4 +55,6 @@ stages:
       application: ${CF_APP}
     script: |-
       #!/bin/bash
+      VIS_REC_API_KEY=`cf service-key "Visual Recognition" "Credentials-1" | sed -En 's/.*api_key.*"(.*)".*/\1/p'`
+      cf set-env "${CF_APP}" VIS_REC_API_KEY ${VIS_REC_API_KEY}
       cf push "${CF_APP}" -p packagedServer.zip
