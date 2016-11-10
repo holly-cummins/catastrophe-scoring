@@ -48,7 +48,6 @@ stages:
   - name: Deploy
     type: deployer
     target:
-    target:
       url: ${CF_TARGET_URL}
       organization: ${CF_ORGANIZATION}
       space: ${CF_SPACE}
