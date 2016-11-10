@@ -21,12 +21,15 @@ public class ImageScorer {
 
 	public Score getScore(String encodedImage) throws IOException {
 		VisualRecognition service = new VisualRecognition(VisualRecognition.VERSION_DATE_2016_05_20);
-		// In Bluemix, this isn't needed
+		// To stay within the free tier limits, manage our service ourselves
 		// Fill in the key for local running
-		// TODO temp Workaround for service binding if
-		// (System.getenv().get("VCAP_SERVICES") == null) {
-		service.setApiKey("59f69625c49175f83d1a20802d17d03ebaea83a6");
-		// }
+		String key = System.getenv().get("VIS_REC_API_KEY");
+		if (key != null) {
+			service.setApiKey(key);
+		} else {
+			System.err.println("No Service Keys found. Set the VIS_REC_API_KEY environment variable.");
+			return new Score(0, "no service available");
+		}
 
 		if (encodedImage != null) {
 			File file = convertStringToImageFile(encodedImage);

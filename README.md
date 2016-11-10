@@ -17,6 +17,7 @@ This application is designed to run on a [raspberry pi](http://www.linksprite.co
 
 ## Getting started 
 
+
 Press this button to get your own copy of the sample running in Bluemix. 
 
 [![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/holly-cummins/catastrophe-scoring)
@@ -53,7 +54,20 @@ This can then be pushed to Bluemix with
 
     cf push -p build/libs/catastrophe-web.war
 
-# Training a Watson Visual Recognition Classifier
+# Setting up a Watson Visual Recognition Classifier
+
+## Creating and binding the service 
+
+You will also need to manually create an instance of the [Watson Visual Recognition Service](https://www.ibm.com/watson/developercloud/visual-recognition.html). Normally this could be done by the build pipeline, but the build pipeline generates a new set of credential every time an application is staged, and the Visual Recognition service limits the number of credentials that can be generated within a 24 hour period.  
+
+Name the service "Visual Recognition". Then, using the `cf` cli, run `cf service-key "Visual Recognition" "Credentials-1"` to see the credentials.
+
+To save them in an environment variable for the application, run 
+
+VIS_REC_API_KEY=`cf service-key "Visual Recognition" "Credentials-1" | sed -En 's/.*api_key.*"(.*)".*/\1/p'`
+
+
+## Training the Classifier
 
 The Visual Recognition service comes with a default 
 classifier which is optimised to understand a wide 
@@ -68,10 +82,9 @@ also a good idea to have a zip file of negative images.
 
 Call the POST /v3/classifiers method with the following cURL command, which uploads the training data and creates the classifier "line-drawings":
 
-Replace {api-key} with the service credentials you copied in the first stage.
 For positive example files, the _positive_examples suffix is required. The prefix you choose (for example, apple) becomes the name of that class.
 
-    curl -X POST -F "cat_positive_examples=@cats.zip" -F "fish_positive_examples=@fish.zip" -F "octopus_positive_examples=@octopods.zip" -F "elephant_positive_examples=@elephants.zip" -F "negative_examples=@negatives.zip" -F "name=line-drawings" "https://gateway-a.watsonplatform.net/visual-recognition/api/v3/classifiers?api_key={api-key}&version=2016-05-20"
+    curl -X POST -F "cat_positive_examples=@cats.zip" -F "fish_positive_examples=@fish.zip" -F "octopus_positive_examples=@octopods.zip" -F "elephant_positive_examples=@elephants.zip" -F "negative_examples=@negatives.zip" -F "name=line-drawings" "https://gateway-a.watsonplatform.net/visual-recognition/api/v3/classifiers?api_key=${VIS_REC_API_KEY}&version=2016-05-20"
     
 The response includes a new classifier ID and status. For example:
 {
