@@ -1,0 +1,13 @@
+#!/bin/sh
+
+VIS_REC_API_KEY=`cf service-key "Visual Recognition" "Credentials-1" | sed -En 's/.*api_key.*"(.*)".*/\1/p'`
+
+zip cats.zip cats/*
+zip fish.zip fish/*
+zip negatives.zip negatives/*
+
+curl -X DELETE "https://gateway-a.watsonplatform.net/visual-recognition/api/v3/classifiers/${CLASSIFIER_ID}?api_key=${VIS_REC_API_KEY}&version=2016-05-20"
+
+#curl -X POST -F "cat_positive_examples=@cats.zip" -F "fish_positive_examples=@fish.zip" -F "octopus_positive_examples=@octopods.zip" -F "elephant_positive_examples=@elephants.zip" -F "negative_examples=@negatives.zip" -F "name=line-drawings" "https://gateway-a.watsonplatform.net/visual-recognition/api/v3/classifiers?api_key=${VIS_REC_API_KEY}&version=2016-05-20"
+CLASSIFIER_ID=`curl -X POST -F "cat_positive_examples=@cats.zip" -F "fish_positive_examples=@fish.zip"  -F "negative_examples=@negatives.zip" -F "name=line-drawings" "https://gateway-a.watsonplatform.net/visual-recognition/api/v3/classifiers?api_key=${VIS_REC_API_KEY}&version=2016-05-20"`
+echo ${CLASSIFIER_ID}  
